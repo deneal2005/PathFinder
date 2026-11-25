@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f4ee" />
+    <title>Pathfinder — Career discovery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#overview" aria-label="Pathfinder home">
+          <span class="brand-mark"><span></span><span></span><span></span></span>
+          <span>pathfinder<span class="brand-dot">.</span></span>
+        </a>
+        <div class="workspace-label">Student workspace</div>
+        <nav class="side-nav">
+          <button class="nav-item active" data-view="overview" aria-current="page"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3.5 10 8.5-7 8.5 7M5.5 9v12h13V9M9.5 21v-7h5v7" /></svg></span>Overview</button>
+          <button class="nav-item" data-view="skills"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5h12M8 12h12M8 19h12" /><circle cx="4" cy="5" r="1" /><circle cx="4" cy="12" r="1" /><circle cx="4" cy="19" r="1" /></svg></span>My skills<span class="nav-count" id="nav-skill-count">8</span></button>
+          <button class="nav-item" data-view="careers"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V5M4 20h17M7.5 16l4-4 3 2 5-7" /></svg></span>Career matches</button>
+          <button class="nav-item" data-view="roadmap"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></svg></span>Learning plan</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="help-card"><div class="help-icon" aria-hidden="true">?</div><div><b>Not sure where to start?</b><p>Compare your skills with early career roles.</p><button data-view="careers">Explore career paths <span>→</span></button></div></div>
+          <div class="profile-mini"><div class="avatar" aria-hidden="true">DM</div><div><b>Delin Meitei</b><span>AI &amp; Data Science</span></div></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar"><div class="breadcrumb">Career discovery <span>/</span> <b id="crumb-current">Overview</b></div><div class="top-actions"><span class="local-badge"><i></i> Prototype</span></div></header>
+        <section id="view-overview" class="view active-view">
+          <div class="page-heading"><div><div class="eyebrow">Career discovery <span class="eyebrow-line"></span> Profile to path</div><h1>Your skills, mapped to <em>career roles</em></h1><p class="lede">Compare project skills with early career roles, then choose one next step.</p></div><button class="button button-quiet" id="edit-profile-shortcut">Edit profile</button></div>
+          <div class="overview-grid">
+            <section class="panel profile-panel">
+              <div class="panel-heading"><div><div class="section-kicker">Your profile</div><h2>Start with what you know</h2></div></div>
+              <p class="panel-copy">Paste a resume, project summary, or a few notes. We’ll find the skills and show how they connect to real roles.</p>
+              <label class="sr-only" for="profile-input">Profile or resume text</label>
+              <textarea id="profile-input" rows="5" placeholder="For example: Built a Python project to forecast sales, cleaned data with pandas, and created a Power BI dashboard..."></textarea>
+              <div class="input-footer"><span>Your text stays in this browser</span><span id="char-count">0 / 2,000</span></div>
+              <div class="profile-actions"><label class="button button-outline upload-button" for="resume-file"><span>↑</span> Upload .txt</label><input id="resume-file" type="file" accept=".txt,text/plain" hidden /><button class="button button-primary" id="analyze-button">Find my skills <span>→</span></button></div>
+              <div class="analysis-message" id="analysis-message" role="status" aria-live="polite"></div>
+            </section>
+            <section class="panel snapshot-panel" aria-live="polite">
+              <div class="section-kicker">Your leading match</div>
+              <h2 id="snapshot-role">Data Analyst</h2>
+              <div class="snapshot-score"><strong id="snapshot-score">56%</strong><span>readiness</span></div>
+              <div class="route-track" aria-hidden="true"><span id="snapshot-route-fill"></span></div>
+              <div class="snapshot-next"><span class="route-node" aria-hidden="true"></span><span>Useful next skill</span><b id="snapshot-gap">Power BI</b></div>
+              <div class="snapshot-support"><span>Already helping</span><b id="snapshot-strengths">SQL · Python · Data visualization</b></div>
+              <button class="text-link" id="snapshot-explore">Explore this path <span>→</span></button>
+            </section>
+          </div>
+
+          <section class="matches-section" id="overview-matches">
+            <div class="section-heading"><div><div class="section-kicker">Your options</div><h2>Career paths that fit your skills</h2><p>Ranked by how much of each role you already cover.</p></div><button class="text-link" data-view="careers">See all matches <span>→</span></button></div>
+            <div class="role-list" id="overview-role-list"></div>
+          </section>
+          <footer class="disclaimer"><span class="disclaimer-mark">i</span><span><b>Built around skills, not personal details.</b> Scores use the skills you share and role requirements. This prototype uses a local skill catalogue; it does not send your profile anywhere.</span><button id="why-score">How scoring works</button></footer>
+        </section>
+
+        <section id="view-skills" class="view">
+          <div class="page-heading simple-heading"><div><div class="eyebrow">Your foundation <span class="eyebrow-line"></span> Skills</div><h1>Skills you can <em>build on</em></h1><p class="lede">Set an honest level for each skill. Your matches and learning plan update as you do.</p></div></div>
+          <div class="skills-layout"><section class="panel skill-editor"><div class="panel-heading"><div><div class="section-kicker">Profile skills</div><h2>Your skill set</h2></div><span class="skill-total"><b id="skills-total">8</b> skills</span></div><p class="panel-copy">Choose the level that best describes how you use each skill today.</p><div class="skill-table-head"><span>Skill</span><span>Comfort level</span></div><div id="skill-list" class="skill-list"></div><form id="add-skill-form" class="add-skill-form"><label class="sr-only" for="new-skill">Add a skill</label><input id="new-skill" placeholder="Add a skill, such as Tableau" maxlength="35" /><button class="button button-outline" type="submit">Add skill</button></form></section><aside class="panel skill-aside"><div class="section-kicker">How to choose</div><h2>Progress, not perfection</h2><p>There’s no penalty for being a beginner. A clear starting point makes your learning plan more useful.</p><div class="level-explainer"><div><span class="level-dot beginner"></span><b>Learning</b><p>Practiced in class or just getting started.</p></div><div><span class="level-dot comfortable"></span><b>Comfortable</b><p>Used independently in coursework or projects.</p></div><div><span class="level-dot strong"></span><b>Confident</b><p>Applied repeatedly or in a real-world setting.</p></div></div><div class="fairness-box"><div><b>Skills do the talking</b><p>Name, gender, hometown and college tier never affect your match.</p></div></div></aside></div>
+        </section>
+
+        <section id="view-careers" class="view">
+          <div class="page-heading simple-heading"><div><div class="eyebrow">Career discovery <span class="eyebrow-line"></span> Role matches</div><h1>Career paths <em>for your skills</em></h1><p class="lede">Each score shows how much of a role’s weighted skill set you already cover.</p></div><button class="button button-outline" data-view="skills">Edit skills</button></div>
+          <div class="match-summary"><div><b id="career-count">5</b><span>roles explored</span></div><p>Good matches are a starting point for exploration, not a verdict on what you can become.</p><span class="summary-icon">↗</span></div>
+          <div class="career-results" id="career-role-list"></div>
+        </section>
+
+        <section id="view-roadmap" class="view">
+          <div class="page-heading simple-heading"><div><div class="eyebrow">Career discovery <span class="eyebrow-line"></span> Learning plan</div><h1>Your next <em>practical step</em></h1><p class="lede">Choose a role to see the skills most useful to learn next.</p></div></div>
+          <div class="roadmap-controls"><label for="roadmap-role">Explore role</label><select id="roadmap-role" aria-label="Choose a career role"></select><span class="plan-label">Suggested steps</span></div>
+          <div class="roadmap-layout"><section class="roadmap-main"><div id="roadmap-content"></div></section><aside class="panel roadmap-aside"><div class="section-kicker">Make it manageable</div><h2>One step at a time</h2><p>Pick a skill that feels useful, then apply it in a small project. Practice makes your progress visible.</p><div class="roadmap-tip"><div><b>A useful rhythm</b><p>Learn one concept, apply it in a project, then note what got easier.</p></div></div><button class="button button-outline full-button" id="print-plan">Print this plan <span>↗</span></button></aside></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="scoring-dialog" class="info-dialog" aria-labelledby="scoring-title"><button class="dialog-close" aria-label="Close dialog">×</button><div class="section-kicker">Scoring</div><h2 id="scoring-title">How role readiness is worked out</h2><p>Each role has a set of skills with different importance weights. Your level on each skill contributes to the total.</p><div class="formula">Readiness = skill weight × your level, added together</div><p>Learning = 35% of a skill’s weight. Comfortable = 70%. Confident = 100%. The score is a guide for prioritizing learning, not a hiring prediction.</p><p class="dialog-footnote">Scores are calculated in your browser from a sample role catalogue.</p></dialog>
+    <script src="app.js"></script>
+  </body>
+</html>
